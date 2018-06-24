@@ -1,0 +1,128 @@
+div .App.main {
+    background-color: #12c2e9;
+    background-image: linear-gradient(to bottom right, #12c2e9 20%, #c471ed, #f64f59 110%);
+    /*, original three colours #12c2e9, #c471ed, #f64f59 */
+    height: 100vh;
+    color: #fff;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: lighter;
+}
+
+/*
+Styling for cicle buttons
+*/
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+  background-color: #fff;
+  color: #c471ed;
+}
+
+.btn-circle.btn-lg {
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+  color: #c471ed;
+  background-color: #fff;
+}
+
+.btn-wicket {
+    color: #f64f59;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+/*
+Make the adivce button full width
+*/
+.advice-buttons button {
+    width: 100%;
+    margin: 0;
+}
+
+.advice-buttons .col-4 {
+    padding: 0;
+}
+
+.btn-primary-outline {
+  background-color: transparent;
+  border-color: #fff !important;
+  color: #fff;
+  border-radius: 0 !important;
+  border-right: 0px !important;
+}
+
+.advice-select-app {
+    padding-bottom: 2%;
+}
+
+/*
+style the advie text averagePartnerhsip
+*/
+
+.currentPartnership-app {
+  padding-top: 5%;
+}
+
+.advice-advice {
+  color: #eee;
+  opacity: 0.8;
+  line-height: 1;
+  text-align: left;
+}
+
+.advice-total-div {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.advice-total {
+  font-size: 40px;
+  margin-bottom: 0;
+  line-height: 1;
+  font-weight: lighter;
+}
+
+.overs-subhead {
+  font-size: 13px;
+}
+
+button.text-button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    padding: 0;
+    font-size: small;
+    vertical-align: middle;
+}
+
+.div-bottom-content {
+  position: absolute;
+  bottom: 0px;
+  padding: 0 5% 0 5%;
+}
+
+.display-right {
+  right: 0;
+}
+
+/* horizontal rule
+*/
+
+hr {
+    margin-top: 0.5rem !important;
+    border-top: 1px solid #fff !important;
+}
+
+/*
+Stopwatch stylesheet*/
+
+h1.stopwatch-timer {
+    margin-bottom: 0;
+}

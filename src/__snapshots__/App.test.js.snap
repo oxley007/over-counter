@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdviceUmpire component renders the AdviceUmpire correctly renders correctly 1`] = `
+<div>
+  <p>
+    LBW advice: take note how far or how close the batter is standing to the stumps. 
+  </p>
+</div>
+`;
