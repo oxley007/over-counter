@@ -9,6 +9,15 @@ div .App.main {
 }
 
 /*
+styling for header
+*/
+
+.header-app {
+    background-color: #00b2ff;
+    padding: 1% 0 1% 0;
+}
+
+/*
 Styling for cicle buttons
 */
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AdviceUmpire from './Components/AdviceUmpire/AdviceUmpire';
+import BallRemove from './Components/BallRemove/BallRemove';
 import renderer from 'react-test-renderer';
 
 /*
@@ -14,6 +15,16 @@ Test Components*/
 
 describe('AdviceUmpire component renders the AdviceUmpire correctly', () => {
   it('renders correctly', () => {
+    const rendered = renderer.create(
+      <BallRemove  />
+    );
+    expect(rendered.toJSON()).toMatchSnapshot();
+  });
+});
+
+/*
+describe('AdviceUmpire component renders the AdviceUmpire correctly', () => {
+  it('renders correctly', () => {
     const adviceumpire = { associatedWith: "batting"};
     const rendered = renderer.create(
       <AdviceUmpire associated={adviceumpire} />
@@ -21,6 +32,7 @@ describe('AdviceUmpire component renders the AdviceUmpire correctly', () => {
     expect(rendered.toJSON()).toMatchSnapshot();
   });
 });
+*/
 
 /*it('renders without crashing', () => {
   const div = document.createElement('div');

@@ -2,6 +2,7 @@ import React, {
   Component
 } from 'react';
 import './App.css';
+import Header from '../Header/Header.js';
 import Ball from '../Ball/Ball.js';
 import Add from '../Add/Add.js';
 import Overs from '../Overs/Overs.js';
@@ -20,16 +21,19 @@ class App extends Component {
     super(props);
 
     this.state = {
-      balls: 0,
-      overs: 0,
-      wickets: 0,
-      wicketBalls: [],
-      avgWicket: 0,
-      highestPartnership: 0,
-      partnerships: [],
-      associatedWith: '',
-      currentPartnership: 0,
-    };
+          balls: 0,
+          overs: 0,
+          wickets: 0,
+          wicketBalls: [],
+          avgWicket: 0,
+          highestPartnership: 0,
+          partnerships: [],
+          associatedWith: '',
+          currentPartnership: 0,
+          resetDisplay: 0,
+        };
+
+    this.baseState = this.state;
 
     this.addBall = this.addBall.bind(this);
     this.removeBall = this.removeBall.bind(this);
@@ -43,8 +47,19 @@ class App extends Component {
     this.highestPartnership = this.highestPartnership.bind(this);
     this.storeAssociated = this.storeAssociated.bind(this);
     this.overBowled = this.overBowled.bind(this);
+    this.resetDisplaySet = this.resetDisplaySet.bind(this);
+    this.resetBuilder = this.resetBuilder.bind(this);
+    this.displaySet = this.displaySet.bind(this);
+
 
   }
+
+    resetBuilder() {
+      let resetDisplay = 0;
+      this.setState({resetDisplay: resetDisplay});
+        this.setState(this.baseState);
+    }
+
 
   addBall() {
 
@@ -305,9 +320,20 @@ averagePartnerhsip(wickets, ball, over) {
     }
   }
 
+  resetDisplaySet() {
+    let resetDisplay = 1;
+    this.setState({resetDisplay: resetDisplay});
+  }
+
+  displaySet() {
+    let resetDisplay = 0;
+    this.setState({resetDisplay: resetDisplay});
+  }
+
   render() {
     return (
       <div className="App main text-center">
+      <Header className="app-header" resetDisplay={this.state.resetDisplay} resetDisplaySet={this.resetDisplaySet} resetBuilder={this.resetBuilder} displayHeader={this.displaySet} />
       <div className="container">
       <AdviceBar ball={this.state.balls} storeAssociated={this.storeAssociated} associated={this.state.associatedWith} wickets={this.state.wickets} over={this.state.overs} currentPartnership={this.state.currentPartnership} avgWicket={this.state.avgWicket} highestPartnership={this.state.highestPartnership} wicketBalls={this.state.wicketBalls} partnerships={this.state.partnerships} />
       <Wickets className="Wicket" addWicket={this.addWicket} removeWicket={this.removeWicket} wickets={this.state.wickets} />
