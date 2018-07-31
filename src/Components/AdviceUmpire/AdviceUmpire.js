@@ -44,7 +44,7 @@ umpireAdvice() {
     return <p>LBW advice: take note how far or how close the batter is standing to the stumps. </p>
     break;
   case 2:
-    return <p>LBW advice: take note of the batters height. Where do the knee roles match up with the stumps?</p>
+    return <p>LBW advice: take note of the batters height. Where do the knee-rolls match up with the stumps?</p>
     break;
   case 3:
     return <p>No ball advice: are you watching the front foot?</p>

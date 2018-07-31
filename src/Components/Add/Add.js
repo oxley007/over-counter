@@ -11,7 +11,7 @@ class Add extends Component {
       <BallRemove className="Ball-remove" removeBall={this.props.removeBall} stopwatch={this.props.stopwatch} />
       </div>
       <div className="ball-add col-4">
-      <Ball className="Ball" addBall={this.props.addBall} stopwatch={this.props.stopwatch} />
+      <Ball className="Ball" addBall={this.props.addBall} wickets={this.props.wickets} highestPartnership={this.props.highestPartnership} averagePartnerhsip={this.props.averagePartnerhsip}/>
       </div>
       <div className="ball-wicket col-4">
       <AddWicket className="Wicket" addWicket={this.props.addWicket} />

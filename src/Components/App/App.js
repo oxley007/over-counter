@@ -2,9 +2,9 @@ import React, {
   Component
 } from 'react';
 import './App.css';
-import Header from '../Header/Header.js';
 import Ball from '../Ball/Ball.js';
 import Add from '../Add/Add.js';
+import AddBall from '../Add/AddBall.js';
 import Overs from '../Overs/Overs.js';
 import OverBowled from '../OverBowled/OverBowled.js';
 import Wickets from '../Wickets/Wickets.js';
@@ -14,15 +14,25 @@ import AdviceBar from '../AdviceBar/AdviceBar.js';
 import AdviceUmpire from '../AdviceUmpire/AdviceUmpire.js';
 import BallCalc from '../../Util/BallCalc.js';
 import BallDiff from '../../Util/BallDiff.js';
-
+import Header from '../Header/Header.js';
+import { connect } from "react-redux";
+import { addOver } from "../../Actions/index";
+import { addStopwatch } from "../../Actions/index";
+const mapDispatchToProps = dispatch => {
+  return {
+    addStopwatch: stopwatch => dispatch(addStopwatch(stopwatch)),
+    addOver: over => dispatch(addOver(over))
+  };
+};
+const mapStateToProps = state => {
+  return { over: state.over.over, ball: state.over.ball };
+};
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-          balls: 0,
-          overs: 0,
           wickets: 0,
           wicketBalls: [],
           avgWicket: 0,
@@ -31,13 +41,14 @@ class App extends Component {
           associatedWith: '',
           currentPartnership: 0,
           resetDisplay: 0,
+          lastClearedIncrementer: null
         };
 
     this.baseState = this.state;
+    this.incrementer = null;
 
     this.addBall = this.addBall.bind(this);
     this.removeBall = this.removeBall.bind(this);
-    this.overCount = this.overCount.bind(this);
     this.cancelBowledOver = this.cancelBowledOver.bind(this);
     this.addOver = this.addOver.bind(this);
     this.removeOver = this.removeOver.bind(this);
@@ -58,8 +69,54 @@ class App extends Component {
       let resetDisplay = 0;
       this.setState({resetDisplay: resetDisplay});
         this.setState(this.baseState);
-    }
 
+        //let over = this.props.over;
+        //let ball = this.props.ball;
+        let over = 0;
+        let ball = 0;
+        this.props.addOver({ over, ball });
+        console.log(this.props.addOver({ over, ball }));
+
+        /*
+        clearInterval(this.incrementer);
+        this.setState({
+          lastClearedIncrementer: this.incrementer
+        }, function () {
+          const { lastClearedIncrementer } = this.state;
+          console.log({lastClearedIncrementer});
+          this.props.addStopwatch({ lastClearedIncrementer });
+          console.log(this.props.addStopwatch({ lastClearedIncrementer }));
+        });
+        */
+
+
+        //clearInterval(this.incrementer);
+
+
+        let lastClearedIncrementer = null;
+        let secondsElapsed = 0;
+        let laps = [];
+        this.props.addStopwatch({ lastClearedIncrementer, laps, secondsElapsed });
+        console.log(this.props.addStopwatch({ lastClearedIncrementer, laps, secondsElapsed }));
+        
+
+        //let secondsElapsed = 0;
+        //let laps = [];
+        //this.props.secondsElapsed = secondsElapsed;
+        //this.props.laps = laps;
+        //this.props.lastClearedIncrementer = lastClearedIncrementer;
+        //this.props.addStopwatch({ secondsElapsed, laps });
+        //console.log(this.props.addStopwatch({ secondsElapsed, laps }));
+
+
+
+    /*    handleStopClick() {
+    clearInterval(this.incrementer);
+    this.setState({
+      lastClearedIncrementer: this.incrementer
+    });
+  }*/
+    }
 
   addBall() {
 
@@ -107,18 +164,7 @@ class App extends Component {
 
   }
 
-  overCount() {
-    let overs = this.state.overs;
-    let balls = this.state.balls;
-    balls = 0;
-    this.setState({
-      balls: balls
-    });
-    overs++;
-    this.setState({
-      overs: overs
-    });
-  }
+
 
   cancelBowledOver() {
     let balls = this.state.balls;
@@ -150,9 +196,10 @@ class App extends Component {
     this.setState({
       wickets: wickets
     });
-    let over = this.state.overs;
-    let ball = this.state.balls;
+    let over = this.props.over;
+    let ball = this.props.ball;
     let wicketBall = `${over}.${ball}`;
+    console.log(wicketBall);
     let clickFrom = 'wicket';
     this.highestPartnership(wickets, ball, over, wicketBall, clickFrom);
     let wicketBalls = this.state.wicketBalls.slice();
@@ -180,13 +227,17 @@ averagePartnerhsip(wickets, ball, over) {
     //divide totalballs by Wickets (70 / 2 = 35)
     let quotient;
     console.log(quotient);
-    console.log(this.state.wickets);
-    if (this.state.wickets > 1) {
+    console.log(wickets);
+    if (wickets > 1) {
+      console.log(wickets + '= total wickets');
     quotient = Math.floor(totalBalls/wickets);
     }
     else {
     quotient = 0;
     }
+
+    console.log(quotient);
+
     //divide the above by 6 and the remainder are the balls (35 goes into 6 5 times with 5 balls remoainder - i.e 5.5)
     //let quotientBalls = Math.floor(quotient/6);
     //let remainderAvg = quotient % 6;
@@ -226,6 +277,13 @@ averagePartnerhsip(wickets, ball, over) {
 
   highestPartnership(wickets, ball, over, wicketBall, clickFrom) {
 
+
+    console.log(wickets);
+    console.log(ball);
+    console.log(over);
+    console.log(wicketBall);
+    console.log(clickFrom);
+
     //workout the balls between each wicket
     //the first wicket is just the over so far
 
@@ -233,7 +291,9 @@ averagePartnerhsip(wickets, ball, over) {
     let latestPartnership;
     let partnershipBall;
     let partnershipOver;
+    console.log(this.state.partnerships);
     let partnerships = this.state.partnerships.slice();
+    console.log(partnerships);
     let wicketBalls = this.state.wicketBalls;
     if (wickets === 1 && clickFrom === 'wicket') {
       console.log('does this get hit?');
@@ -316,7 +376,7 @@ averagePartnerhsip(wickets, ball, over) {
     return <OverBowled ball={this.state.balls} overCount={this.overCount} cancelOver={this.cancelBowledOver} addWicket={this.addWicket} />
     }
   else {
-      return <Add className="add-ball-wicket" addBall={this.addBall} removeBall={this.removeBall} stopwatch={this.stopwatch} addWicket={this.addWicket} />
+      return <Add className="add-ball-wicket" addBall={this.addBall} removeBall={this.removeBall} stopwatch={this.stopwatch} addWicket={this.addWicket} wicket={this.state.wickets} highestPartnership={this.highestPartnership}/>
     }
   }
 
@@ -336,14 +396,15 @@ averagePartnerhsip(wickets, ball, over) {
       <Header className="app-header" resetDisplay={this.state.resetDisplay} resetDisplaySet={this.resetDisplaySet} resetBuilder={this.resetBuilder} displayHeader={this.displaySet} />
       <div className="container">
       <AdviceBar ball={this.state.balls} storeAssociated={this.storeAssociated} associated={this.state.associatedWith} wickets={this.state.wickets} over={this.state.overs} currentPartnership={this.state.currentPartnership} avgWicket={this.state.avgWicket} highestPartnership={this.state.highestPartnership} wicketBalls={this.state.wicketBalls} partnerships={this.state.partnerships} />
-      <Wickets className="Wicket" addWicket={this.addWicket} removeWicket={this.removeWicket} wickets={this.state.wickets} />
-      <Overs ball={this.state.balls} over={this.state.overs} addOver={this.addOver} removeOver={this.removeOver} />
+      <Wickets className="Wicket" removeWicket={this.removeWicket} wickets={this.state.wickets} />
+      <Overs  addOver={this.addOver} removeOver={this.removeOver} highestPartnership={this.highestPartnership} wickets={this.state.wickets} />
       <AdviceUmpire associated={this.state.associatedWith} />
-      {this.overBowled()}
+      <AddBall overCount={this.overCount} cancelOver={this.cancelBowledOver} emoveBall={this.removeBall} highestPartnership={this.highestPartnership} averagePartnerhsip={this.averagePartnerhsip} addWicket={this.addWicket} wickets={this.state.wickets} />
       </div>
       </div>
     );
   }
 }
 
-export default App;
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

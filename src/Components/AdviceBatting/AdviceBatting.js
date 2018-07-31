@@ -4,6 +4,11 @@ import CurrentPartnership from '../CurrentPartnership/CurrentPartnership.js';
 import HighestPartnerhsip from '../HighestPartnerhsip/HighestPartnerhsip.js';
 import BallDiff from '../../Util/BallDiff.js';
 import Advice from '../../Util/Advice.js';
+import { connect } from "react-redux";
+import { addOver } from "../../Actions/index";
+const mapStateToProps = state => {
+  return { over: state.over.over, ball: state.over.ball };
+};
 
 class AdviceBatting extends Component {
   constructor(props) {
@@ -120,4 +125,4 @@ class AdviceBatting extends Component {
   }
 }
 
-export default AdviceBatting;
+export default connect(mapStateToProps)(AdviceBatting);

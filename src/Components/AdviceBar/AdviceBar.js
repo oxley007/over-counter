@@ -21,7 +21,7 @@ class AdviceBar extends Component {
       }
     else {
       return (
-        <AdviceBatting associated={this.props.associated} ball={this.props.ball} over={this.props.over} wickets={this.props.wickets} currentPartnership={this.props.currentPartnership} avgWicket={this.props.avgWicket} highestPartnership={this.props.highestPartnership} wicketBalls={this.props.wicketBalls} partnerships={this.props.partnerships} secondsElapsed={this.props.secondsElapsed} />
+        <AdviceBatting associated={this.props.associated} wickets={this.props.wickets} currentPartnership={this.props.currentPartnership} avgWicket={this.props.avgWicket} highestPartnership={this.props.highestPartnership} wicketBalls={this.props.wicketBalls} partnerships={this.props.partnerships} secondsElapsed={this.props.secondsElapsed} />
       )
     }
   }

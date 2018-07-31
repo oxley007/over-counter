@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './AddWicket.css';
 
 class AddWickets extends Component {
+
   render() {
     return (
       <div className="wicket-app div-bottom-content">
