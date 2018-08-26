@@ -1,7 +1,7 @@
 import React, {
   Component
 } from 'react';
-import './App.css';
+//import './App.css';
 import Ball from '../Ball/Ball.js';
 import Add from '../Add/Add.js';
 import AddBall from '../Add/AddBall.js';
@@ -15,9 +15,26 @@ import AdviceUmpire from '../AdviceUmpire/AdviceUmpire.js';
 import BallCalc from '../../Util/BallCalc.js';
 import BallDiff from '../../Util/BallDiff.js';
 import Header from '../Header/Header.js';
+
+/*
+Redux imports
+*/
 import { connect } from "react-redux";
 import { addOver } from "../../Actions/index";
 import { addStopwatch } from "../../Actions/index";
+
+
+/*
+Material UI
+*/
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import compose from 'recompose/compose';
+
+/*
+Redux constants*/
 const mapDispatchToProps = dispatch => {
   return {
     addStopwatch: stopwatch => dispatch(addStopwatch(stopwatch)),
@@ -27,6 +44,38 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return { over: state.over.over, ball: state.over.ball };
 };
+
+/*
+Material UI constants
+*/
+const styles = theme => ({
+  container: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(12, 1fr)',
+    gridGap: `${theme.spacing.unit * 3}px`,
+  },
+  containerMargin: {
+    paddingRight: '5%',
+    paddingLeft: '5%',
+  },
+  headerColor: {
+    backgroundColor: '#00b2ff',
+  },
+  mainApp: {
+    overflow: 'hidden',
+    backgroundColor: '#12c2e9',
+    backgroundImage: 'linear-gradient(to bottom right, #12c2e9 20%, #c471ed, #f64f59 110%)',
+    //backgroundImage: 'linear-gradient(135.92deg,#12c2e9 0%,#c471ed 24.66%,#f64f59)',
+    //backgroundImage: 'linear-gradient(135.92deg,#f64f59 0%,#c471ed 24.66%,#12c2e9)',
+    /*, original three colours #12c2e9, #c471ed, #f64f59 */
+    height: '100vh',
+    color: '#fff',
+    //fontFamily: "'Source Sans Pro', sans-serif",
+    ['@media (max-width:374px)']: { // eslint-disable-line no-useless-computed-key
+      fontSize: '0.7rem',
+    },
+  },
+});
 
 class App extends Component {
   constructor(props) {
@@ -98,7 +147,7 @@ class App extends Component {
         let laps = [];
         this.props.addStopwatch({ lastClearedIncrementer, laps, secondsElapsed });
         console.log(this.props.addStopwatch({ lastClearedIncrementer, laps, secondsElapsed }));
-        
+
 
         //let secondsElapsed = 0;
         //let laps = [];
@@ -295,6 +344,7 @@ averagePartnerhsip(wickets, ball, over) {
     let partnerships = this.state.partnerships.slice();
     console.log(partnerships);
     let wicketBalls = this.state.wicketBalls;
+    console.log(wicketBalls);
     if (wickets === 1 && clickFrom === 'wicket') {
       console.log('does this get hit?');
       highestPartnership = wicketBall;
@@ -357,9 +407,28 @@ averagePartnerhsip(wickets, ball, over) {
       console.log('current partnershp getting hit?');
       console.log(latestPartnership);
       console.log(this.state.currentPartnership);
+      if (latestPartnership < 0) {
+        console.log(wicketBalls);
+        wicketBalls.pop();
+        console.log(wicketBalls);
+        console.log(latestPartnership);
+        latestPartnership = 0;
+        let currentBallOver = `${over}.${ball}`;
+        console.log(currentBallOver);
+        wicketBalls.push(currentBallOver);
+        this.setState({wicketBalls: wicketBalls});
+        console.log(wicketBalls);
+
+
+        this.setState({
+          currentPartnership: latestPartnership
+        });
+      }
+      else {
       this.setState({
         currentPartnership: latestPartnership
       });
+    }
     }
 
   }
@@ -391,20 +460,26 @@ averagePartnerhsip(wickets, ball, over) {
   }
 
   render() {
+    const { classes } = this.props;
     return (
-      <div className="App main text-center">
-      <Header className="app-header" resetDisplay={this.state.resetDisplay} resetDisplaySet={this.resetDisplaySet} resetBuilder={this.resetBuilder} displayHeader={this.displaySet} />
-      <div className="container">
-      <AdviceBar ball={this.state.balls} storeAssociated={this.storeAssociated} associated={this.state.associatedWith} wickets={this.state.wickets} over={this.state.overs} currentPartnership={this.state.currentPartnership} avgWicket={this.state.avgWicket} highestPartnership={this.state.highestPartnership} wicketBalls={this.state.wicketBalls} partnerships={this.state.partnerships} />
-      <Wickets className="Wicket" removeWicket={this.removeWicket} wickets={this.state.wickets} />
-      <Overs  addOver={this.addOver} removeOver={this.removeOver} highestPartnership={this.highestPartnership} wickets={this.state.wickets} />
-      <AdviceUmpire associated={this.state.associatedWith} />
-      <AddBall overCount={this.overCount} cancelOver={this.cancelBowledOver} emoveBall={this.removeBall} highestPartnership={this.highestPartnership} averagePartnerhsip={this.averagePartnerhsip} addWicket={this.addWicket} wickets={this.state.wickets} />
-      </div>
+      <div className={classes.mainApp}>
+        <Header className={classes.headerColor} resetDisplay={this.state.resetDisplay} resetDisplaySet={this.resetDisplaySet} resetBuilder={this.resetBuilder} displayHeader={this.displaySet} />
+        <AdviceBar ball={this.state.balls} storeAssociated={this.storeAssociated} associated={this.state.associatedWith} wickets={this.state.wickets} over={this.state.overs} currentPartnership={this.state.currentPartnership} avgWicket={this.state.avgWicket} highestPartnership={this.state.highestPartnership} wicketBalls={this.state.wicketBalls} partnerships={this.state.partnerships} />
+
+      <Grid className={classes.containerMargin} container spacing={12}>
+          <Grid item xs={12}>
+            <Wickets className="Wicket" removeWicket={this.removeWicket} wickets={this.state.wickets} addWicket={this.addWicket} />
+            <Overs  addOver={this.addOver} removeOver={this.removeOver} highestPartnership={this.highestPartnership} wickets={this.state.wickets} />
+
+            <AddBall overCount={this.overCount} cancelOver={this.cancelBowledOver} emoveBall={this.removeBall} highestPartnership={this.highestPartnership} averagePartnerhsip={this.averagePartnerhsip} addWicket={this.addWicket} wickets={this.state.wickets} />
+          </Grid>
+        </Grid>
       </div>
     );
   }
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps)
+  )(App);

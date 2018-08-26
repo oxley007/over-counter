@@ -2,6 +2,24 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { addStopwatch } from "../../Actions/index";
 import { addOver } from "../../Actions/index";
+
+/*
+Material UI
+*/
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import compose from 'recompose/compose';
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
+  verticalAlign: {
+    marginTop: 'auto',
+    marginBottom: 'auto',
+  },
+});
+
 const mapDispatchToProps = dispatch => {
   return {
     addStopwatch: stopwatch => dispatch(addStopwatch(stopwatch)),
@@ -86,11 +104,10 @@ handleStopClick() {
 
 
   render() {
-    console.log(this.props.incrementer);
-    console.log(this.props.secondsElapsed);
+    const { classes } = this.props;
     return (
       <div className="ball-add-app">
-        <button onClick={this.handleStopClick} className="btn-sm btn-wicket">Yes</button>
+        <Button onClick={this.handleStopClick} variant="contained" color="secondary" className={classes.button}>Yes</Button>
       </div>
     );
   }
@@ -99,4 +116,7 @@ handleStopClick() {
 //const Button = (props) =>
   //<button type="button" {...props} className={"btn " + props.className } />;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Ball);
+  export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, mapDispatchToProps)
+    )(Ball);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './AdviceBatting.css';
 import CurrentPartnership from '../CurrentPartnership/CurrentPartnership.js';
+import AveragePartnership from '../CurrentPartnership/AveragePartnership.js';
 import HighestPartnerhsip from '../HighestPartnerhsip/HighestPartnerhsip.js';
 import BallDiff from '../../Util/BallDiff.js';
 import Advice from '../../Util/Advice.js';
@@ -110,6 +111,7 @@ class AdviceBatting extends Component {
     return (
       <div>
       <CurrentPartnership currentPartnership={currentPartnership} avgAdvice={avgAdvice}/>
+      <AveragePartnership averagePartnership={avgWicket}  wickets={this.props.wickets} />
       <HighestPartnerhsip highestPartnership={highestPartnership} highAdvice={highAdvice}/>
       </div>
 

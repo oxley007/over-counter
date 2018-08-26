@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import './Ball.css';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+import Icon from '@material-ui/core/Icon';
 
 const formattedSeconds = (sec) =>
   Math.floor(sec / 60) +
@@ -22,6 +26,8 @@ class Ball extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.stopwatch = this.stopwatch.bind(this);
     this.stopwatchTime = this.stopwatchTime.bind(this);
+
+    const { classes } = props;
   }
 
 handleClick() {
@@ -73,8 +79,9 @@ return (
         {this.stopwatchTime()}
         </div>
         <div className="add-ball">
-          <BallAdd />
-          <button className="Add-ball btn btn-default btn-circle btn-lg" onClick={this.handleClick}><h2>+</h2></button>
+          <Button variant="fab" color="primary" aria-label="Add" className={classes.button} onClick={this.handleClick}>
+        <AddIcon />
+      </Button>
         </div>
       </div>
     );

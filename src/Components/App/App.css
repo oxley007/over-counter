@@ -8,13 +8,10 @@ div .App.main {
     font-weight: lighter;
 }
 
-/*
-styling for header
-*/
-
-.header-app {
-    background-color: #00b2ff;
-    padding: 1% 0 1% 0;
+.Bouncefix {
+    overflow-y: auto;
+    overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /*
@@ -65,10 +62,6 @@ Make the adivce button full width
   color: #fff;
   border-radius: 0 !important;
   border-right: 0px !important;
-}
-
-.advice-select-app {
-    padding-bottom: 2%;
 }
 
 /*

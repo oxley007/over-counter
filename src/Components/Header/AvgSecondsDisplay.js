@@ -15,7 +15,7 @@ import compose from 'recompose/compose';
 /*
 Redux constants*/
 const mapStateToProps = state => {
-  return { secondsElapsed: state.stopwatch.secondsElapsed, laps: state.stopwatch.laps, lastClearedIncrementer: state.stopwatch.lastClearedIncrementer, stop: state.stopwatch.stop };
+  return { avgSeconds: state.stopwatch.avgSeconds };
 };
 
 /*
@@ -23,46 +23,47 @@ Material Ui constants
 */
 
 const styles = theme => ({
-  stopwatchDisplay: {
-    float: 'right',
-    marginRight: '0.20rem',
-    marginBottom: '0.1rem',
+  avgText: {
+    margin: '0 0 10px 0',
+    textAlign: 'center',
+    fontSize: '0.8rem',
   },
 });
 
 
-const formattedSeconds = (sec) =>
-  Math.floor(sec / 60) +
-    ':' +
-  ('0' + sec % 60).slice(-2)
-
-
-
-class Stopwatch extends Component {
+class AvgSecondsDisplay extends Component {
 
   constructor(props) {
     super(props);
 
     this.incrementer = null;
 
-    this.stopwatchTime = this.stopwatchTime.bind(this);
+    this.avgSecondsDisplay = this.avgSecondsDisplay.bind(this);
+
   }
 
-
-stopwatchTime() {
-  const { classes } = this.props;
-return (
-<div className="stopwatch">
-  <h1 className={classes.stopwatchDisplay}>{formattedSeconds(this.props.secondsElapsed)}</h1>
-</div>
-)
-}
+  avgSecondsDisplay() {
+    const { classes } = this.props;
+    //console.log(this.state.avgSeconds);
+    console.log(this.props.avgSeconds);
+    if (isNaN(parseFloat(this.props.avgSeconds))) {
+      return (
+      <span className={classes.avgText}>Avg: 0:00</span>
+    )
+    }
+    else {
+    return (
+      <span className={classes.avgText}>Avg: {this.props.avgSeconds}</span>
+      )
+      }
+    }
 
   render() {
+    const { classes } = this.props;
     return (
-      <div className="ball-add-app">
-        {this.stopwatchTime()}
-      </div>
+      <Grid item xs={12} className={classes.avgText}>
+      {this.avgSecondsDisplay()}
+      </Grid>
     );
   }
 }
@@ -73,4 +74,4 @@ return (
   export default compose(
     withStyles(styles),
     connect(mapStateToProps)
-    )(Stopwatch);
+  )(AvgSecondsDisplay);

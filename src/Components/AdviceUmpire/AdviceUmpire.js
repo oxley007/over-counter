@@ -1,4 +1,26 @@
 import React, { Component } from 'react';
+/*
+Material UI
+*/
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+/*
+Material UI constants
+*/
+const styles = theme => ({
+  container: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(12, 1fr)',
+    gridGap: `${theme.spacing.unit * 3}px`,
+  },
+  hideSmall: {
+    ['@media (max-width:374px)']: { // eslint-disable-line no-useless-computed-key
+      display: 'none',
+    },
+  }
+});
 
 class AdviceUmpire extends Component {
   constructor(props) {
@@ -77,12 +99,15 @@ umpireAdvice() {
 }
 
   render() {
+    const { classes } = this.props;
     return (
-      <div>
-      {this.umpireAdvice()}
-      </div>
+      <Grid container spacing={12} className="advice-select-app">
+        <Grid item xs={12} className={classes.hideSmall}>
+          {this.umpireAdvice()}
+        </Grid>
+      </Grid>
     );
   }
 }
 
-export default AdviceUmpire;
+export default withStyles(styles)(AdviceUmpire);

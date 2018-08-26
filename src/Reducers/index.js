@@ -11,6 +11,8 @@ const initialState = {
   laps: [],
   lastClearedIncrementer: null,
   incrementer: null,
+  avgBall: [],
+  avgSeconds: 0,
   stop: 0,
   wicket: 0
   /*wicketBall: [],
@@ -42,13 +44,16 @@ const rootReducer = (state = initialState, action) => {
           currentPartnership: action.payload.currentPartnership*/
       }};
     case ADD_STOPWATCH:
-      console.log(action.payload.secondsElapsed);
-      console.log(action.payload.incrementer);
+      //console.log(action.payload.secondsElapsed);
+      //console.log(action.payload.incrementer);
+      console.log(action.payload.avgSeconds);
       return { ...state, stopwatch: {
         secondsElapsed: action.payload.secondsElapsed,
         laps: [...state.laps, action.payload],
         lastClearedIncrementer: action.payload.lastClearedIncrementer,
-        incrementer: action.payload.incrementer
+        incrementer: action.payload.incrementer,
+        avgBall: action.payload.avgBall,
+        avgSeconds: action.payload.avgSeconds
       }};
     default:
       return state;

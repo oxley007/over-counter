@@ -1,18 +1,75 @@
 import React, { Component } from 'react';
 import Stopwatch from './Stopwatch';
+import AvgSecondsDisplay from './AvgSecondsDisplay';
 import Reset from './Reset';
+
+/*
+Redux imports
+*/
 import { connect } from "react-redux";
 import { addStopwatch } from "../../Actions/index";
 import { addOver } from "../../Actions/index";
+
+/*
+Material UI
+*/
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import compose from 'recompose/compose';
+
+/*
+Redux Constants
+*/
 const mapDispatchToProps = dispatch => {
   return {
-    addStopwatch: stopwatch => dispatch(addStopwatch(stopwatch)),
-    addOver: over => dispatch(addOver(over))
+    addStopwatch: stopwatch => dispatch(addStopwatch(stopwatch))
   };
 };
 const mapStateToProps = state => {
-  return { over: state.over.over, ball: state.over.ball };
+  return {  };
 };
+
+/*
+Material UI constants
+*/
+const styles = theme => ({
+  container: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(12, 1fr)',
+    gridGap: `${theme.spacing.unit * 3}px`,
+    justifyContent: 'center',
+  },
+  containerMargin: {
+    paddingRight: '5%',
+    paddingLeft: '5%',
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
+  extendedIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  headerColor: {
+    backgroundColor: '#00b2ff',
+  },
+  verticalAlign: {
+    marginTop: 'auto',
+    marginBottom: 'auto',
+  },
+  verticalAlignText: {
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    lineHeight: '0.85',
+  },
+  avgText: {
+    margin: '0 0 10px 0',
+    textAlign: 'center',
+    fontSize: '0.8rem',
+  }
+});
 
 class Header extends Component {
   constructor(props) {
@@ -21,6 +78,8 @@ class Header extends Component {
         secondsElapsed: 0,
         laps: [],
         lastClearedIncrementer: null,
+        avgBall: [],
+        avgSeconds: 0,
         over: 0,
         ball: 0
       };
@@ -32,13 +91,14 @@ class Header extends Component {
     this.handleStopClick = this.handleStopClick.bind(this);
     this.stopwatch = this.stopwatch.bind(this);
 
+
   }
 
 
   componentWillMount() {
-    const { secondsElapsed, laps, lastClearedIncrementer } = this.state;
-    console.log(this.props.addStopwatch({ secondsElapsed, laps, lastClearedIncrementer }));
-    this.props.addStopwatch({ secondsElapsed, laps, lastClearedIncrementer });
+    const { secondsElapsed, laps, lastClearedIncrementer, avgBall, avgSeconds } = this.state;
+    //console.log(this.props.addStopwatch({ secondsElapsed, laps, lastClearedIncrementer }));
+    this.props.addStopwatch({ secondsElapsed, laps, lastClearedIncrementer,avgBall, avgSeconds });
   }
 
 
@@ -53,9 +113,9 @@ class Header extends Component {
       laps: []
     }, function () {
       const { secondsElapsed, laps } = this.state;
-      console.log({secondsElapsed, laps});
+      //console.log({secondsElapsed, laps});
       this.props.addStopwatch({ secondsElapsed, laps });
-      console.log(this.props.addStopwatch({ secondsElapsed, laps }));
+      //console.log(this.props.addStopwatch({ secondsElapsed, laps }));
     });
 
     /*
@@ -68,9 +128,9 @@ class Header extends Component {
             secondsElapsed: this.state.secondsElapsed + 1
           },  function () {
             const { secondsElapsed } = this.state;
-            console.log({secondsElapsed });
+            //console.log({secondsElapsed });
             this.props.addStopwatch({ secondsElapsed });
-            console.log(this.props.addStopwatch({ secondsElapsed }));
+            //console.log(this.props.addStopwatch({ secondsElapsed }));
           })
         , 1000);
 
@@ -82,56 +142,72 @@ class Header extends Component {
       this.setState({
         lastClearedIncrementer: this.incrementer
       }, function () {
-        const { secondsElapsed, laps, lastClearedIncrementer } = this.state;
-        console.log({secondsElapsed, laps, lastClearedIncrementer});
-        this.props.addStopwatch({ secondsElapsed, laps, lastClearedIncrementer });
-        console.log(this.props.addStopwatch({ secondsElapsed, laps, lastClearedIncrementer }))
+        const { secondsElapsed, laps, lastClearedIncrementer, avgBall, avgSeconds } = this.state;
+        //console.log({secondsElapsed, laps, lastClearedIncrementer});
+        this.props.addStopwatch({ secondsElapsed, laps, lastClearedIncrementer, avgBall, avgSeconds });
+        //console.log(this.props.addStopwatch({ secondsElapsed, laps, lastClearedIncrementer }))
       });
     }
 
 
+
   headerDisplay() {
+    const { classes } = this.props;
     if (this.props.resetDisplay === 0) {
     return (
-      <div className="row">
-    <div className="col-4">
-    <button onClick={this.props.resetDisplaySet} className="btn-sm btn-wicket">Reset</button>
-  </div>
-    <div className="col-8">
-    <Stopwatch />
-    </div>
-    </div>
+        <Grid container spacing={12} vertical-align="center" className="advice-select-app">
+          <Grid item xs={8} className={classes.verticalAlign}>
+    <Button variant="contained" color="secondary" onClick={this.props.resetDisplaySet} className={classes.button}>Reset</Button>
+  </Grid>
+  <Grid item xs={4} className={classes.verticalAlign}>
+    <Grid container spacing={12} vertical-align="center" className="advice-select-app">
+      <Grid item xs={9} className={classes.verticalAlign}>
+        <Stopwatch />
+        <AvgSecondsDisplay />
+      </Grid>
+      <Grid item xs={3} className={classes.verticalAlignText}>
+      <span>since last ball</span>
+      </Grid>
+
+      </Grid>
+  </Grid>
+    </Grid>
+
     )
   }
   else {
     return (
-      <div className="row">
-      <div className="col-4">
+        <Grid container spacing={12} className="advice-select-app">
+          <Grid item xs={4}>
       <p>Are you sure?</p>
-      </div>
-      <div className="col-4">
+      </Grid>
+      <Grid item xs={4}>
         <Reset resetBuilder={this.props.resetBuilder}/>
-    </div>
-      <div className="col-4">
-      <button onClick={this.props.displayHeader} className="btn-sm">Cancel</button>
-      </div>
-      </div>
+    </Grid>
+      <Grid item xs={4}>
+      <Button onClick={this.props.displayHeader} variant="outlined" className={classes.button}>Cancel</Button>
+      </Grid>
+    </Grid>
     )
   }
   }
 
   render() {
-    console.log('THis is the header');
+    const { classes } = this.props;
     return (
-      <div className="header-app">
-
+      <div className={classes.headerColor}>
+        <Grid className={classes.containerMargin} container spacing={12}>
+          <Grid item xs={12}>
 
           {this.headerDisplay()}
-
+        </Grid>
+      </Grid>
 
       </div>
     );
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps)
+  )(Header);

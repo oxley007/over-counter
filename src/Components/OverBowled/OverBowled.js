@@ -1,8 +1,22 @@
 import React, { Component } from 'react';
 import './OverBowled.css';
 import AddWicket from '../AddWicket/AddWicket.js';
+import BallRemove from '../BallRemove/BallRemove.js';
+/*
+Material UI imports
+*/
+import compose from 'recompose/compose';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+/*
+Redux imports
+*/
 import { addOver } from "../../Actions/index";
 import { connect } from "react-redux";
+/*
+Redux constants
+*/
 const mapDispatchToProps = dispatch => {
   return {
     addOver: over => dispatch(addOver(over))
@@ -11,6 +25,42 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return { over: state.over.over, ball: state.over.ball };
 };
+/*
+Material UI Constants
+*/
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+    backgroundColor: '#fff',
+    color: '#c471ed',
+    '&:hover': {
+      backgroundColor: '#fff',
+      color: '#c471ed',
+    },
+    '&:active': {
+      backgroundColor: '#f64f59',
+      color: '#fff',
+    },
+  },
+  container: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(12, 1fr)',
+    gridGap: `${theme.spacing.unit * 3}px`,
+  },
+  alignCenter: {
+    textAlign: 'center',
+    marginTop: 'auto',
+  },
+  containerMargin: {
+    paddingRight: '5%',
+    paddingLeft: '5%',
+  },
+  noMargin: {
+    ['@media (max-height:650px)']: { // eslint-disable-line no-useless-computed-key
+      margin: '0',
+    },
+  }
+});
 
 
 class OverBowled extends Component {
@@ -48,26 +98,27 @@ class OverBowled extends Component {
     overBowled() {
       console.log(this.props.ball );
       if (this.props.ball === 6) {
+        const { classes } = this.props;
         return (
-          <div className="over-bowled-app fixed-bottom advice-select-app">
-          <div className="row">
-          <div className="col-12">
-          <h2>Over bowled</h2>
-          </div>
-          </div>
-          <div className="row">
-          <div className="col-4">
-          <div className="div-bottom-content display-right">
-          <button className="ok-button-over btn-circle" onClick={this.props.cancelOver}>-</button>
-          </div>
-          </div>
-          <div className="col-4">
-          <button className="ok-button-over btn btn-default btn-circle btn-lg" onClick={this.overCount}>ok</button>
-          </div>
-          <div className="ball-wicket col-4">
-          <AddWicket className="Wicket" addWicket={this.props.addWicket} />
-          </div>
-          </div>
+          <div>
+          <Grid className={classes.containerMargin} container spacing={12}>
+            <Grid item xs={12} className={classes.alignCenter}>
+              <h2 className={classes.noMargin}>Over bowled</h2>
+            </Grid>
+          </Grid>
+          <Grid className={classes.containerMargin} container spacing={12}>
+            <Grid item xs={3} className={classes.alignCenter}>
+              <BallRemove className="" wickets={this.props.wickets} stopwatch={this.props.stopwatch} highestPartnership={this.props.highestPartnership} />
+            </Grid>
+            <Grid item xs={6} className={classes.alignCenter}>
+              <Button variant="fab" size="medium" color="primary" aria-label="Add" className={classes.button} onClick={this.overCount}>
+              OK
+              </Button>
+            </Grid>
+            <Grid item xs={3} className={classes.alignCenter}>
+              <AddWicket className="Wicket" addWicket={this.props.addWicket} />
+            </Grid>
+          </Grid>
           </div>
         )
 
@@ -87,4 +138,7 @@ class OverBowled extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OverBowled);
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps)
+  )(OverBowled);

@@ -26,8 +26,9 @@ class AdviceBar extends Component {
     }
   }
 
-  handleAssociatedButton(e) {
-    let associatedWith = e.target.value;
+  handleAssociatedButton(associatedWith) {
+    console.log('hit!!!');
+    //let associatedWith = e.target.value;
     console.log(associatedWith);
     this.props.storeAssociated(associatedWith);
   }
@@ -35,7 +36,7 @@ class AdviceBar extends Component {
   render() {
     return (
       <div className="advice-bar-app">
-      {this.adviceDisplay()}
+      <AdviceBatting associated={this.props.associated} wickets={this.props.wickets} currentPartnership={this.props.currentPartnership} avgWicket={this.props.avgWicket} highestPartnership={this.props.highestPartnership} wicketBalls={this.props.wicketBalls} partnerships={this.props.partnerships} secondsElapsed={this.props.secondsElapsed} />
       </div>
     );
   }
